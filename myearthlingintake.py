@@ -1,95 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun 18 11:49:26 2023
+Earthling intake calculator
 
-Earthling (Life) Intake Calculator
-
-Description
 Estimates the number of earthlings a human eats across many years based on their mass, edible percentage, and serving size.
-
-
-Introduction
-Eating one serving not conscious. But habit comes a long way.
-
-Calculations cover some of the most consumed earthlings worldwide, such as: chicken, pig, cattle, sheep, goat, turkey, duck and a category for others.
-
-Stats for the earthlings come from here:
-
-# PIG
-# 105 kg   https://guiadegranja.com/cuanto-pesa-un-cerdo/
-# 70 %     https://www.3tres3.com/articulos/aprovechamiento-de-subproductos-porcinos_44211/
-# 0.150 kg https://sanidadfuenllana1d.files.wordpress.com/2014/09/raciones-caseras.pdf
-
-# VACA
-# 450 kg https://www.solofauna.com/vacas/cuanto-pesa-una-vaca-peso-promedio-por-edad-y-raza/
-# 0.3 kg https://eldiariony.com/2020/10/03/aprende-a-calcular-la-cantidad-exacta-de-carne-por-persona-un-basico-para-hacer-de-tus-parrilladas-un-exito/
-# 89.5 % https://www.contextoganadero.com/informes/cuanto-porcentaje-del-bovino-se-obtiene-para-su-aprovechamiento
-# 80 %   https://respuestasabia.com.mx/que-porcentaje-se-aprovecha-de-una-vaca/
-
-# CHICKEN
-# 3 kg    https://foodly.tn/es/tips/how-much-does-a-whole-chicken-usually-weigh/
-# 56 %    http://www.cca.org.mx/cca/cursos/nmp/gastronomia/m6/img/pdf/Anexo16_m6.pdf
-# 0.11 kg https://estilosdevidasaludable.sanidad.gob.es/alimentacionSaludable/habilidades/compra/menus/pdf/Peso_de_raciones_por_grupos.pdf
-
-# OVEJA
-# 45 kg   https://cuantopesa.org/cuanto-pesa-una-oveja/
-# 50%     https://cuantopesa.org/cuanto-pesa-una-oveja/
-# 0.11 kg https://estilosdevidasaludable.sanidad.gob.es/alimentacionSaludable/habilidades/compra/menus/pdf/Peso_de_raciones_por_grupos.pdf
-
-# Cabra (goat)
-34 kg     https://www.reference.com/pets-animals/average-weight-goat-aa2887a76452bcb8           https://whatthingsweigh.com/how-much-does-a-goat-weigh/
-0.085 kg  https://www.healthline.com/nutrition/goat-meat-benefits?c=1413489482298#Goat-meat-basics
-25.5%     https://www.vcalc.com/wiki/AndrewBudd/Weight+of+meat+on+a+goat
-# Turkey
-9 kg (20 pounds)   https://bbqhost.com/average-turkey-weight/
-55%                https://global-faq.com/what-percentage-of-a-turkey-is-edible/
-0.57 kg (1.25 lbs) https://www.tasteofhome.com/article/how-much-turkey-per-person/
-
-# Duck
-1.35 kg (0.7-2)  https://pangeanimales.com/aves/pato/
-62.5% (60-65%)   https://thishappyfarm.com/how-much-meat-does-a-duck-yield/
-0.5 (1-1.2 pounds) https://ask.usda.gov/s/article/How-much-duck-or-goose-should-you-buy-per-person
-
-Life expectancy average comes from here:
-73 https://www.worldometers.info/demographics/life-expectancy/
-
-Common earthlings consumed:
-https://scienceagri.com/the-10-worlds-most-consumed-of-animal-meat/
-
-Model
-Formula is earthling.serving_mass*earthling.yearly_servings)/(earthling.mass*earthling.edible_percentage
-To get yearly_servings user is asked for its weekly, monthy or year servings, multiplying by a factor of 52 or 12 if neccesary.
-Rounding to the next integer is performed on the last step to get the final earthling number.
-
-
-Limitations
-The model only uses the  mass eaten to calculate the final earthling number 
-- Other animal products and derivatives (such as eggs, milk, leather...) are not considered
-- Earthlings used to feed other earthlings are not considered
-- Earthlings killed during the process and transportation are not considered
-- Earthlings trashed without being consumed are not considered
-- Earthlings not consumed but disposed by the human are not considered
-
-TO-DOs
-# TODO: Add fish
-# TODO: Add argparse arguments: --animal --estimation --years --verbose
-# TODO: Manually code ceil function to avoid dependencies
-
-argparse: https://docs.python.org/3/library/argparse.html
-
-import argparse
-parser = argparse.ArgumentParser(
-                    prog='Life creature intake calculator',
-                    description='Calculates how many animals you eat across a lifespan based on how many meet servings you usually have',
-                    epilog='Text at the bottom of help')
-parser.add_argument('-a', '--animal', help="specifies a certain animal (default 'all')",action='store_true')
-parser.add_argument('-y', '--years', help="specifies the timespan in years (default '80')", action='store_true')
-parser.add_argument('-e', '--estimation', help="specifies the estimation [low,medium,high] (default 'medium')", action='store_true')
-args = parser.parse_args()
-print(args.params)
-print(args.filename, args.count, args.verbose)
-
-@author: Pablo
 """
 
 
@@ -152,11 +65,6 @@ for earthling in earthlings:
 	#print('')
 
 
-#print('Yearly average:')
-#for earthling in earthlings:
-#	print(earthling.name.title()+':',str(earthlings_eaten(earthling,1)),'('+str(earthling.yearly_servings),'servings/year)')
-
-
 print('\nEarthling intake in ',years,'years')
 total_earthlings = 0
 
@@ -169,5 +77,3 @@ for earthling in earthlings:
 
 print('\nTotal:',total_earthlings,'('+str(total_earthlings/years)+'/year)')
 print('\nNote: this estimation is based on raw mass intake.\nReal earthling number is likely higher')
-
-
