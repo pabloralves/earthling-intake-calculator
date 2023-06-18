@@ -2,7 +2,8 @@
 """
 Earthling intake calculator
 
-Estimates the number of earthlings a human eats across many years based on their mass, edible percentage, and serving size.
+Estimates how many earthlings a human eats across time based on earthling mass, edible percentage, serving size and consumption frequency.
+
 """
 
 
@@ -59,7 +60,8 @@ years = int(input('How many years do you want to take into account? (average lif
 print('')
 
 
-for earthling in earthlings:
+for i,earthling in enumerate(earthlings):
+	print('('+str(i+1)+'/'+str(len(earthlings))+')')
 	yearly_servings = find_yearly_servings(earthling)
 	earthling.set_yearly_servings(yearly_servings)
 	#print('')
