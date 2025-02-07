@@ -179,9 +179,9 @@ data_total = pd.DataFrame(list(user_eathlings_eaten_total.items()), columns=["Ea
 st.bar_chart(data_total, x="Earthling", y="Count", stack=False,horizontal=True)
 
 # Print each earthlings as a separate emoji
-see_earthlings = st.toggle("## Display",value=True)
-if see_earthlings:
-    st.info(f'This is a visual representation of the {total_earthlings_eaten} earthlings expected to be eaten during the next {years} years as a result of your current intake frequencies')
-    for earthling in earthlings:
-        st.write(earthling.emoji*user_eathlings_eaten_total[earthling.name])
+# see_earthlings = st.toggle("## Display",value=True)
+#if see_earthlings:
+st.info(f'This is a visual representation of the {total_earthlings_eaten} earthlings expected to be eaten during the next {years} years as a result of your current intake frequencies')
+for earthling in earthlings:
+    st.write(earthling.emoji*user_eathlings_eaten_total[earthling.name])
 
