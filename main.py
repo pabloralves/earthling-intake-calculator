@@ -3,13 +3,6 @@ from math import ceil
 import streamlit as st
 from logic import get_earthlings,consumption_frequencies
 
-DESCRIPTION_STRING = 'This calculator estimates how many **earthlings** a human being consumes across the lifespan based on a given period length and the average intake frequency of the earthlings involved.'
-
-st.title('Earthling intake calculator')
-st.image('./img/goat-8313480_640.jpg',caption='"Think occasionally of the suffering of which you spare yourself the sight." - Albert Schweitzer')
-st.page_link("https://pixabay.com/photos/goat-horns-sleeping-mammal-animal-8313480/", label="Image by Dave (Pixabay)", icon="📷")
-st.write(DESCRIPTION_STRING)
-st.divider()
 
 # Get available earthlings and intake frequencies
 earthlings = get_earthlings()
@@ -20,75 +13,14 @@ user_intake = {}
 user_eathlings_eaten_yearly = {}
 user_eathlings_eaten_total = {}
 
-# Fill user intake with 0s by default
-for i,earthling in enumerate(earthlings):
-    user_intake[f"{earthling.name}"] = 0    # Yearly intake (frequency)
-    user_eathlings_eaten_yearly[f"{earthling.name}"] = 0  # Yearly intake (earthlings)
-    user_eathlings_eaten_total[f"{earthling.name}"] = 0
 
-# 1. Number input for number of years to use in the computation
-st.write(f'## Time period')
-st.info('**Step 1**. Choose how many years do you want to consider')
+DESCRIPTION_STRING = 'This calculator estimates how many **earthlings** a human being consumes across the lifespan based on a given period length and the average intake frequency of the earthlings involved.'
 
+st.title('Earthling intake calculator')
+st.image('./img/goat-8313480_640.jpg',caption='"Think occasionally of the suffering of which you spare yourself the sight." - Albert Schweitzer')
+st.page_link("https://pixabay.com/photos/goat-horns-sleeping-mammal-animal-8313480/", label="Image by Dave (Pixabay)", icon="📷")
+st.write(DESCRIPTION_STRING)
 
-years = st.number_input('How many years do you want to consider?',
-                        min_value=1,
-                        max_value=150,
-                        value=73,
-                        step=1,
-                        label_visibility='collapsed')
-
-
-
-# 2. Sliders for user to indicate their How often do you have...?
-st.write('## Intake frequency ')
-st.info('**Step 2**. Select the option that best represents how often you ingest these earthlings')
-
-for i,earthling in enumerate(earthlings):
-    # Go over the earthlings to get their intake frequency
-    st.write(f'####  {earthling.emoji} **{earthling.name}**')
-    frequency  = st.select_slider(
-        f'## {earthling.emoji} **{earthling.name}**?',
-        options=frequency_options[::-1],
-        key=f"{earthling.name}",
-        label_visibility='collapsed'
-    )
-
-    # Save the actual year intake frequency equivalent
-    user_intake[f"{earthling.name}"] = consumption_frequencies[frequency]
-
-
-# Compute statistics
-for earthling in earthlings:
-
-    # Save number of earthlings eaten in a year (by mass)
-    eaten_in_a_year = (earthling.serving_mass*user_intake[f"{earthling.name}"])/(earthling.mass*earthling.edible_percentage)
-    user_eathlings_eaten_yearly[f"{earthling.name}"] = eaten_in_a_year
-
-    # Save number of earthlings eaten in the entire period
-    total_units = ceil(eaten_in_a_year*years)
-    user_eathlings_eaten_total[f"{earthling.name}"] = total_units
-    #print(earthling.name.title()+':',total_units,'('+str(earthling.yearly_servings),'servings/year, '+str("{:10.2f}".format(earthlings_eaten(earthling,1))),'earthlings/year)')
-
-
-total_earthlings_eaten = sum(user_eathlings_eaten_total.values())
-total_earthlings_eaten_yearly = sum(user_eathlings_eaten_yearly.values())
-
-st.divider()
-
-# 3. Show results
-st.write(f'## Earthlings')
-st.info(f'**Results**. With your current intake frequency, this is the approximate number of earthlings you can expect to eat eat over {years} years')
-st.metric("Total 🍴", f"{total_earthlings_eaten}", f"{round(total_earthlings_eaten_yearly,2)}/year", border=True,delta_color='inverse')
-data_total = pd.DataFrame(list(user_eathlings_eaten_total.items()), columns=["Earthling", "Count"])
-st.bar_chart(data_total, x="Earthling", y="Count", stack=False,horizontal=True)
-
-# Print each earthlings as a separate emoji
-see_earthlings = st.toggle("## Display")
-if see_earthlings:
-    st.info(f'This is a visual representation of the {total_earthlings_eaten} earthlings expected to be eaten during the next {years} years as a result of your current intake frequencies')
-    for earthling in earthlings:
-        st.write(earthling.emoji*user_eathlings_eaten_total[earthling.name])
 
 # 4. Show method
 see_method = st.toggle("## Method")
@@ -178,3 +110,78 @@ if see_credits:
     st.info(ABOUT_STRING)
     st.write('This project was born out of compassion, and it is my wish that it remains licensed under CC0 so that all can benefit from it in the best way possible.')
     st.page_link("https://creativecommons.org/public-domain/cc0/", label="CC0 License", icon="📄")    
+
+
+st.divider()
+
+
+# Fill user intake with 0s by default
+for i,earthling in enumerate(earthlings):
+    user_intake[f"{earthling.name}"] = 0    # Yearly intake (frequency)
+    user_eathlings_eaten_yearly[f"{earthling.name}"] = 0  # Yearly intake (earthlings)
+    user_eathlings_eaten_total[f"{earthling.name}"] = 0
+
+# 1. Number input for number of years to use in the computation
+st.write(f'## Time period')
+st.info('**Step 1**. Choose how many years do you want to consider')
+
+
+years = st.number_input('How many years do you want to consider?',
+                        min_value=1,
+                        max_value=150,
+                        value=73,
+                        step=1,
+                        label_visibility='collapsed')
+
+
+
+# 2. Sliders for user to indicate their How often do you have...?
+st.write('## Intake frequency ')
+st.info('**Step 2**. Select the option that best represents how often you ingest these earthlings')
+
+for i,earthling in enumerate(earthlings):
+    # Go over the earthlings to get their intake frequency
+    st.write(f'####  {earthling.emoji} **{earthling.name}**')
+    frequency  = st.select_slider(
+        f'## {earthling.emoji} **{earthling.name}**?',
+        options=frequency_options[::-1],
+        key=f"{earthling.name}",
+        label_visibility='collapsed'
+    )
+
+    # Save the actual year intake frequency equivalent
+    user_intake[f"{earthling.name}"] = consumption_frequencies[frequency]
+
+
+# Compute statistics
+for earthling in earthlings:
+
+    # Save number of earthlings eaten in a year (by mass)
+    eaten_in_a_year = (earthling.serving_mass*user_intake[f"{earthling.name}"])/(earthling.mass*earthling.edible_percentage)
+    user_eathlings_eaten_yearly[f"{earthling.name}"] = eaten_in_a_year
+
+    # Save number of earthlings eaten in the entire period
+    total_units = ceil(eaten_in_a_year*years)
+    user_eathlings_eaten_total[f"{earthling.name}"] = total_units
+    #print(earthling.name.title()+':',total_units,'('+str(earthling.yearly_servings),'servings/year, '+str("{:10.2f}".format(earthlings_eaten(earthling,1))),'earthlings/year)')
+
+
+total_earthlings_eaten = sum(user_eathlings_eaten_total.values())
+total_earthlings_eaten_yearly = sum(user_eathlings_eaten_yearly.values())
+
+st.divider()
+
+# 3. Show results
+st.write(f'## Earthlings')
+st.info(f'**Results**. With your current intake frequency, this is the approximate number of earthlings you can expect to eat eat over {years} years')
+st.metric("Total 🍴", f"{total_earthlings_eaten}", f"{round(total_earthlings_eaten_yearly,2)}/year", border=True,delta_color='inverse')
+data_total = pd.DataFrame(list(user_eathlings_eaten_total.items()), columns=["Earthling", "Count"])
+st.bar_chart(data_total, x="Earthling", y="Count", stack=False,horizontal=True)
+
+# Print each earthlings as a separate emoji
+see_earthlings = st.toggle("## Display")
+if see_earthlings:
+    st.info(f'This is a visual representation of the {total_earthlings_eaten} earthlings expected to be eaten during the next {years} years as a result of your current intake frequencies')
+    for earthling in earthlings:
+        st.write(earthling.emoji*user_eathlings_eaten_total[earthling.name])
+
